@@ -1,0 +1,27 @@
+.player-container {
+    margin: 50px;
+}
+
+@media screen and (min-width: 1600px) {
+    .player-container { margin: 50px 100px; }   
+}
+
+@media screen and (min-width: 1920px) {
+    .player-container { margin: 50px 200px; }   
+}
+
+@media screen and (min-width: 2160px) {
+    .player-container { margin: 50px 400px; }   
+}
+
+@media screen and (min-width: 2500px) {
+    .player-container { margin: 50px 500px; }   
+}
+
+@media screen and (min-width: 3000px) {
+    .player-container { margin: 50px 550px; }   
+}
+
+@media screen and (min-width: 3400px) {
+    .player-container { margin: 50px 600px; }   
+}

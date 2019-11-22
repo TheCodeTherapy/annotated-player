@@ -1,0 +1,304 @@
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css');
+
+:root {
+    --to-load-color: #000000;
+    --loaded-color: #FFFFFF;
+    --thumb-color: #607d8b;
+}
+
+[type='video'] {
+    padding: 0px;
+    margin: 0px;
+    position: relative;
+    display: flex;
+    z-index: -1;
+}
+
+.video-player-wrapper {
+    position: relative;
+    padding-top: 1px;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+
+.react-player {
+    opacity: 0.6;
+    transition: all 0.3s ease-in-out;
+}
+
+.react-player-wrapper {
+    margin: 5px;
+}
+
+.seek-bar {
+    backface-visibility: hidden;
+}
+
+.markers-wrapper {
+    position: absolute;
+    width: calc(100% - 35px);
+    min-height: 20px;
+}
+
+.single-marker {
+    position: absolute;
+    float: left;
+    margin-top: -30px;
+}
+
+.marker-icons {
+    font-size: 25px !important;
+    color: #FFFF00;
+    -webkit-text-stroke: 1px black;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    cursor: pointer;
+}
+
+.tooltip-wrapper {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 100%);
+    padding: 21px;
+    border-radius: 7px;
+    width: 100%;
+    height: calc(100% - 17px);
+    opacity: 0;
+    z-index: 100;
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.tooltip h4 {
+    font-size: 17px;
+    font-weight: 900;
+}
+
+.tooltip p {
+    font-size: 14px;
+}
+
+.tooltip img {
+    width: 480px;
+    height: 360px;
+}
+
+.player-buttons {
+    font-size: 40px !important;
+    opacity: 1.0;
+    transition: all 0.5s ease-in-out;
+}
+
+.play-button {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 95%;
+    cursor: pointer;
+    z-index: 100;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+$track-color: #eceff1 !default;
+$thumb-color: #607d8b !default;
+$loaded-color: var(--loaded-color) !default;
+
+$thumb-radius: 12px !default;
+$thumb-height: 24px !default;
+$thumb-width: 24px !default;
+$thumb-shadow-size: 4px !default;
+$thumb-shadow-blur: 4px !default;
+$thumb-shadow-color: rgba(0, 0, 0, .2) !default;
+$thumb-border-width: 2px !default;
+$thumb-border-color: #eceff1 !default;
+
+$track-width: 100% !default;
+$track-height: 8px !default;
+$track-shadow-size: 1px !default;
+$track-shadow-blur: 1px !default;
+$track-shadow-color: rgba(0, 0, 0, .2) !default;
+$track-border-width: 2px !default;
+$track-border-color: #cfd8dc !default;
+
+$track-radius: 5px !default;
+$contrast: 5% !default;
+
+$ie-bottom-track-color: darken($track-color, $contrast) !default;
+
+@mixin shadow($shadow-size, $shadow-blur, $shadow-color) {
+    box-shadow: $shadow-size $shadow-size $shadow-blur $shadow-color, 0 0 $shadow-size lighten($shadow-color, 5%);
+}
+
+@mixin track {
+    cursor: pointer;
+    height: $track-height;
+    transition: all .15s ease-in-out;
+    width: $track-width;
+}
+
+@mixin thumb {
+    @include shadow($thumb-shadow-size, $thumb-shadow-blur, $thumb-shadow-color);
+    background: $thumb-color;
+    border: $thumb-border-width solid $thumb-border-color;
+    border-radius: $thumb-radius;
+    box-sizing: border-box;
+    cursor: pointer;
+    height: $thumb-height;
+    width: $thumb-width;
+}
+
+@mixin thumb-volume {
+    @include shadow($thumb-shadow-size, $thumb-shadow-blur, $thumb-shadow-color);
+    background: $thumb-color;
+    border: $thumb-border-width solid $thumb-border-color;
+    border-radius: $thumb-radius / 1.5;
+    box-sizing: border-box;
+    cursor: pointer;
+    height: $thumb-height / 1.5;
+    width: $thumb-width / 1.5;
+}
+
+[type='range'].player-seek {
+    -webkit-appearance: none;
+    background: transparent;
+    display: flex;
+    margin: $thumb-height / 2 0;
+    width: $track-width;
+    margin-top: 2px;
+
+    &::-moz-focus-outer {
+        border: 0;
+    }
+
+    &:focus {
+        outline: 0;
+
+        &::-webkit-slider-runnable-track {
+            background: lighten($track-color, $contrast);
+        }
+
+        &::-ms-fill-lower {
+            background: $track-color;
+        }
+
+        &::-ms-fill-upper {
+            background: lighten($track-color, $contrast);
+        }
+    }
+
+    &::-webkit-slider-runnable-track {
+        @include track;
+        @include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
+        background: $track-color;
+        border: $track-border-width solid $track-border-color;
+        border-radius: $track-radius;
+    }
+
+    &::-webkit-slider-thumb {
+        @include thumb;
+        -webkit-appearance: none;
+        margin-top: ((-$track-border-width * 2 + $track-height) / 2 - $thumb-height / 2);
+    }
+
+    &::-moz-range-track {
+        @include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
+        @include track;
+        background: $track-color;
+        border: $track-border-width solid $track-border-color;
+        border-radius: $track-radius;
+        height: $track-height / 2;
+    }
+
+    &::-moz-range-thumb {
+        @include thumb;
+    }
+
+    &::-ms-track {
+        @include track;
+        background: transparent;
+        border-color: transparent;
+        border-width: ($thumb-height / 2) 0;
+        color: transparent;
+    }
+
+    &::-ms-fill-lower {
+        @include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
+        background: $ie-bottom-track-color;
+        border: $track-border-width solid $track-border-color;
+        border-radius: ($track-radius * 2);
+    }
+
+    &::-ms-fill-upper {
+        @include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
+        background: $track-color;
+        border: $track-border-width solid $track-border-color;
+        border-radius: ($track-radius * 2);
+    }
+
+    &::-ms-thumb {
+        @include thumb;
+        margin-top: $track-height / 4;
+    }
+
+    &:disabled {
+
+        &::-webkit-slider-thumb,
+        &::-moz-range-thumb,
+        &::-ms-thumb,
+        &::-webkit-slider-runnable-track,
+        &::-ms-fill-lower,
+        &::-ms-fill-upper {
+            cursor: not-allowed;
+        }
+    }
+}
+
+
+
+[type='range'].player-load {
+    z-index: -1;
+    background: linear-gradient(to right, $loaded-color 0%, $loaded-color 0%, #000000 0%, #000000 100%);
+    max-height: 2px;
+    height: 2px;
+    padding: 0px;
+    display: flex;
+    outline: none;
+    transition: background 450ms ease-in;
+    -webkit-appearance: none;
+    position: relative;
+    overflow: visible;
+    width: 100%;
+
+    &::-webkit-slider-thumb {
+        display: none;
+        width: 0px;
+        height: 0px;
+    }
+
+    &::-moz-range-thumb {
+        display: none;
+        width: 0px;
+        height: 0px;
+        color: var(--to-load-color);
+        border: none;
+    }
+
+    &::-ms-thumb {
+        display: none;
+        width: 0px;
+        height: 0px;
+        color: var(--to-load-color);
+        border: none;
+    }
+
+}
+
+[type='range'].player-load span {
+    position: relative;
+
+}
